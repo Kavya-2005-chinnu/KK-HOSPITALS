@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KK Hospital  - Patient & Appointment Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* Base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: #374151;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      scroll-behavior: smooth;
+    }
+    a {
+      color: #4f46e5;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover, a:focus {
+      color: #3730a3;
+      outline: none;
+    }
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+      color: #1e293b;
+    }
+    p {
+      margin-top: 0;
+      color: #6b7280;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      display: block;
+    }
+    .material-icons {
+      vertical-align: middle;
+      font-size: 20px;
+      color: #4f46e5;
+      user-select: none;
+    }
+
+    /* Layout */
+    header {
+      position: sticky;
+      top: 0;
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 200;
+    }
+    header .logo {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #4f46e5;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+    }
+    nav ul li {
+      display: inline;
+    }
+    nav ul li a {
+      font-weight: 600;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 4px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+    nav ul li a:hover,
+    nav ul li a:focus {
+      background-color: #e0e7ff;
+      color: #3730a3;
+      outline: none;
+    }
+    main {
+      flex: 1 1 auto;
+      max-width: 1200px;
+      margin: 32px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    section {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgb(0 0 0 / 0.05);
+    }
+    section h2 {
+      margin-bottom: 24px;
+      font-size: 2rem;
+      color: #4338ca;
+      user-select: none;
+    }
+
+    /* Doctors Section */
+    .doctors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+      gap: 24px;
+    }
+    .doctor-card {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 6px 15px rgba(71, 60, 255, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.3s ease;
+    }
+    .doctor-card:hover {
+      box-shadow: 0 15px 30px rgba(71, 60, 255, 0.25);
+    }
+    .doctor-photo {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .doctor-info {
+      padding: 16px 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .doctor-info h3 {
+      font-size: 1.25rem;
+      color: #312e81;
+      user-select: text;
+    }
+    .doctor-info p {
+      font-size: 0.95rem;
+      color: #6b7280;
+      margin-bottom: 8px;
+      flex-grow: 1;
+    }
+    .doctor-times {
+      font-size: 0.9rem;
+      color: #4338ca;
+      font-weight: 600;
+      user-select: text;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .doctor-times .material-icons {
+      font-size: 18px;
+      color: #6366f1;
+    }
+
+    /* Medicines Section */
+    .medicines-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+      gap: 20px;
+    }
+    .medicine-card {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.06);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      transition: transform 0.25s ease;
+    }
+    .medicine-card:hover {
+      transform: translateY(-5px);
+    }
+    .medicine-image {
+      width: 120px;
+      height: 120px;
+      border-radius: 12px;
+      object-fit: contain;
+      background: #ede9fe;
+    }
+    .medicine-name {
+      font-weight: 700;
+      color: #4338ca;
+      font-size: 1.1rem;
+      text-align: center;
+      user-select: text;
+    }
+    .medicine-info {
+      color: #6b7280;
+      font-size: 0.9rem;
+      text-align: center;
+      user-select: text;
+    }
+
+    /* Appointment Section */
+    .appointment-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr 320px;
+      gap: 24px;
+      min-height: 600px;
+    }
+    /* Left panel - Mini calendar & upcoming */
+    .left-panel {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 2px 20px rgb(71 60 255 / 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      height: fit-content;
+      user-select: none;
+    }
+    .mini-calendar {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    /* Mini Calendar Table */
+    .mini-calendar table {
+      width: 100%;
+      border-collapse: collapse;
+      user-select: none;
+    }
+    .mini-calendar th {
+      color: #4f46e5;
+      padding: 8px 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      background: #eef2ff;
+    }
+    .mini-calendar td {
+      text-align: center;
+      padding: 8px 6px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
+      font-size: 0.85rem;
+      color: #374151;
+    }
+    .mini-calendar td:hover:not(.disabled):not(.selected) {
+      background-color: #e0e7ff;
+    }
+    .mini-calendar td.disabled {
+      color: #cbd5e1;
+      cursor: default;
+    }
+    .mini-calendar td.today {
+      background: #4f46e5;
+      color: white;
+      font-weight: 700;
+    }
+    .mini-calendar td.selected {
+      background: #a5b4fc;
+      color: #3730a3;
+      font-weight: 600;
+    }
+
+    /* Calendar list */
+    .calendar-list {
+      border-top: 1px solid #e5e7eb;
+      padding-top: 12px;
+    }
+    .calendar-list h3 {
+      user-select: text;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      color: #4338ca;
+    }
+    .calendar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 6px 0;
+      transition: background-color 0.2s ease;
+      user-select: none;
+      color: #4f46e5;
+      font-weight: 500;
+    }
+    .calendar-item:hover {
+      background-color: #e0e7ff;
+      border-radius: 8px;
+      outline: none;
+    }
+    .calendar-color {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* Upcoming events */
+    .upcoming-events {
+      border-top: 1px solid #e5e7eb;
+      padding-top: 12px;
+    }
+    .upcoming-events h3 {
+      user-select: text;
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+      color: #4338ca;
+    }
+    .upcoming-event {
+      background: #eef2ff;
+      border-radius: 12px;
+      padding: 8px 16px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #3730a3;
+      user-select: text;
+      box-shadow: 0 2px 8px rgb(71 60 255 / 0.1);
+      cursor: default;
+    }
+
+    /* Middle panel - Main calendar */
+    .middle-panel {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 2px 20px rgb(71 60 255 / 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      user-select: none;
+    }
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .calendar-header .title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #4338ca;
+      user-select: text;
+    }
+    .calendar-controls {
+      display: flex;
+      gap: 12px;
+    }
+    .button {
+      background: #4f46e5;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      user-select: none;
+      transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .button:disabled {
+      background: #a5b4fc;
+      cursor: not-allowed;
+    }
+    .button svg, .button .material-icons {
+      font-size: 20px;
+      color: inherit;
+      user-select: none;
+    }
+    .button:hover:not(:disabled) {
+      background-color: #3730a3;
+    }
+
+    /* Month view calendar grid */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      user-select: none;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+    }
+
+    .calendar-grid .day-header,
+    .calendar-grid .day-cell {
+      border-bottom: 1px solid #e5e7eb;
+      border-right: 1px solid #e5e7eb;
+      min-height: 96px;
+      padding: 6px 8px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      position: relative;
+    }
+    .calendar-grid .day-header:last-child,
+    .calendar-grid .day-cell:last-child {
+      border-right: none;
+    }
+    .calendar-grid .day-header {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #4338ca;
+      background: #eef2ff;
+      user-select: text;
+      justify-content: center;
+      align-items: center;
+      padding: 12px 8px;
+    }
+    .calendar-grid .day-number {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #4338ca;
+      user-select: text;
+      margin-bottom: 6px;
+      pointer-events: none;
+      user-select: none;
+    }
+    .calendar-grid .day-cell.out-of-month {
+      color: #cbd5e1;
+      background: #f9fafb;
+    }
+    .calendar-grid .day-cell.today {
+      border: 2px solid #4f46e5;
+      background: #ede9fe;
+    }
+    .calendar-grid .day-cell:hover {
+      background-color: #e0e7ff;
+      cursor: pointer;
+    }
+    .event-badge {
+      padding: 2px 6px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      color: white;
+      font-weight: 600;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+      box-shadow: 0 2px 6px rgb(71 60 255 / 0.4);
+      user-select: none;
+    }
+    .category-default { background-color: #4f46e5; }
+    .category-checkup { background-color: #2563eb; }
+    .category-surgery { background-color: #dc2626; }
+    .category-pharmacy { background-color: #16a34a; }
+
+    /* Event detail popup */
+    .event-detail-popup {
+      position: absolute;
+      z-index: 999;
+      background: white;
+      box-shadow: 0 6px 20px rgba(71, 60, 255, 0.15);
+      border-radius: 14px;
+      padding: 16px;
+      max-width: 280px;
+      user-select: text;
+      top: 32px;
+      left: 8px;
+      pointer-events: auto;
+      font-size: 0.9rem;
+      color: #374151;
+    }
+    .event-detail-popup h4 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      color: #4338ca;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .event-detail-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      color: #6b7280;
+    }
+    .event-detail-row:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Right panel - Appointment creation and details */
+    .right-panel {
+      background: white;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 2px 20px rgb(71 60 255 / 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      user-select: none;
+      min-height: fit-content;
+    }
+    .right-panel h3 {
+      margin-bottom: 16px;
+      font-size: 1.4rem;
+      color: #4338ca;
+      user-select: text;
+    }
+    form label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #4f46e5;
+      user-select: text;
+      font-size: 0.95rem;
+    }
+    form input, form select, form textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 1rem;
+      margin-bottom: 16px;
+      color: #374151;
+      font-family: inherit;
+      user-select: text;
+      transition: border-color 0.3s ease;
+    }
+    form input:focus, form select:focus, form textarea:focus {
+      border-color: #4338ca;
+      outline: none;
+    }
+    form textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+    form button[type="submit"] {
+      background-color: #4f46e5;
+      color: white;
+      font-weight: 700;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    form button[type="submit"]:hover {
+      background-color: #3730a3;
+    }
+    .error-message {
+      color: #dc2626;
+      font-size: 0.9rem;
+      margin-top: -12px;
+      margin-bottom: 12px;
+      user-select: text;
+    }
+
+    /* Timing guidance section */
+    .timing-guidance {
+      background: white;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 2px 20px rgb(71 60 255 / 0.1);
+      color: #4338ca;
+      font-weight: 600;
+      user-select: text;
+      font-size: 1.05rem;
+      line-height: 1.4;
+      max-width: 1200px;
+      margin: 0 auto 40px auto;
+      border-left: 6px solid #4f46e5;
+    }
+    .timing-guidance strong {
+      color: #312e81;
+    }
+
+    /* Responsive */
+    @media (min-width: 1024px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      .appointment-layout {
+        grid-template-columns: 280px 1fr 320px;
+      }
+    }
+    @media (max-width: 1023px) {
+      .appointment-layout {
+        grid-template-columns: 1fr;
+      }
+      .left-panel, .middle-panel, .right-panel {
+        height: auto !important;
+      }
+    }
+    @media (max-width: 640px) {
+      nav ul {
+        gap: 16px;
+      }
+      section h2 {
+        font-size: 1.5rem;
+      }
+      .doctor-card {
+        flex-direction: column;
+      }
+      .appointment-layout {
+        grid-template-columns: 1fr !important;
+        gap: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo" tabindex="0">Hospital Care</div>
+    <nav aria-label="Primary Navigation">
+      <ul>
+        <li><a href="#doctors"><span class="material-icons" aria-hidden="true">medication</span> Doctors</a></li>
+        <li><a href="#appointments"><span class="material-icons" aria-hidden="true">calendar_today</span> Appointments</a></li>
+        <li><a href="#medicines"><span class="material-icons" aria-hidden="true">local_pharmacy</span> Medicines</a></li>
+        <li><a href="#timing-guidance"><span class="material-icons" aria-hidden="true">schedule</span> Visit Guidelines</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="doctors" aria-label="Doctors Information" tabindex="0">
+      <h2>Meet Our Doctors</h2>
+      <div class="doctors-grid">
+        <article class="doctor-card" tabindex="0" aria-labelledby="doc1-name" aria-describedby="doc1-desc doc1-times">
+          <img
+            src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/14eae68f-7bdb-4ac7-a4bd-cb5610484b56.png"
+            alt="Portrait of Dr. Sarah Johnson, Cardiologist wearing a white coat and stethoscope"
+            class="doctor-photo"
+            loading="lazy"
+          />
+          <div class="doctor-info">
+            <h3 id="doc1-name">Dr. Sarah Johnson</h3>
+            <p id="doc1-desc">Cardiologist specializing in heart disease and preventive care with 12 years of experience.</p>
+            <div class="doctor-times" id="doc1-times"><span class="material-icons" aria-hidden="true">schedule</span> Mon - Fri, 9:00 AM - 2:00 PM</div>
+          </div>
+        </article>
+        <article class="doctor-card" tabindex="0" aria-labelledby="doc2-name" aria-describedby="doc2-desc doc2-times">
+          <img
+            src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4cd073f8-4886-4cdb-b4df-90ba273bbef2.png"
+            alt="Portrait of Dr. James Lee, Orthopedic Surgeon in scrubs and surgical mask"
+            class="doctor-photo"
+            loading="lazy"
+          />
+          <div class="doctor-info">
+            <h3 id="doc2-name">Dr. James Lee</h3>
+            <p id="doc2-desc">Orthopedic Surgeon focused on minimally invasive techniques and rehabilitation.</p>
+            <div class="doctor-times" id="doc2-times"><span class="material-icons" aria-hidden="true">schedule</span> Tue - Sat, 10:00 AM - 4:00 PM</div>
+          </div>
+        </article>
+        <article class="doctor-card" tabindex="0" aria-labelledby="doc3-name" aria-describedby="doc3-desc doc3-times">
+          <img
+            src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/423c6177-48fd-4c88-9f67-68c993c1d89e.png"
+            alt="Portrait of Dr. Emily Clark, Pediatrician smiling with a friendly expression"
+            class="doctor-photo"
+            loading="lazy"
+          />
+          <div class="doctor-info">
+            <h3 id="doc3-name">Dr. Emily Clark</h3>
+            <p id="doc3-desc">Pediatrician dedicated to child health, growth, and immunizations.</p>
+            <div class="doctor-times" id="doc3-times"><span class="material-icons" aria-hidden="true">schedule</span> Mon, Wed, Fri 8:00 AM - 1:00 PM</div>
+          </div>
+        </article>
+        <article class="doctor-card" tabindex="0" aria-labelledby="doc4-name" aria-describedby="doc4-desc doc4-times">
+          <img
+            src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/414be89f-8152-4d1b-9ab0-fd2a790ebbe2.png"
+            alt="Portrait of Dr. Michael Nguyen, Neurologist seated in his office"
+            class="doctor-photo"
+            loading="lazy"
+          />
+          <div class="doctor-info">
+            <h3 id="doc4-name">Dr. Michael Nguyen</h3>
+            <p id="doc4-desc">Neurologist researching innovative treatments for neurological disorders.</p>
+            <div class="doctor-times" id="doc4-times"><span class="material-icons" aria-hidden="true">schedule</span> Wed - Sun, 11:00 AM - 5:00 PM</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="appointments" aria-label="Appointment Booking">
+      <h2>Book an Appointment</h2>
+      <div class="appointment-layout">
+        <!-- Left panel -->
+        <div class="left-panel" aria-label="Mini calendar and upcoming appointments" tabindex="0">
+          <div class="mini-calendar" aria-label="Mini calendar for date selection"></div>
+          <div class="calendar-list" aria-label="Calendar List">
+            <h3>Your Calendars</h3>
+            <div class="calendar-item" data-calendar-id="primary" style="color: #4f46e5;">Hospital Care</div>
+            <div class="calendar-item" data-calendar-id="cardiology" style="color: #2563eb;">Cardiology</div>
+            <div class="calendar-item" data-calendar-id="orthopedic" style="color: #dc2626;">Orthopedic</div>
+            <div class="calendar-item" data-calendar-id="pediatric" style="color: #14b8a6;">Pediatrics</div>
+            <div class="calendar-item" data-calendar-id="neurology" style="color: #9333ea;">Neurology</div>
+          </div>
+          <div class="upcoming-events" aria-live="polite" aria-atomic="true" tabindex="0">
+            <h3>Upcoming Appointments</h3>
+            <div id="upcoming-events-list"></div>
+          </div>
+        </div>
+        <!-- Middle panel -->
+        <div class="middle-panel" aria-label="Main calendar view" tabindex="0">
+          <div class="calendar-header">
+            <div class="title" aria-live="polite" aria-atomic="true" id="calendar-title">Month View</div>
+            <div class="calendar-controls" role="group" aria-label="Calendar Controls">
+              <button id="prev-month" class="button" aria-label="Previous Month" type="button">
+                <span class="material-icons" aria-hidden="true">chevron_left</span> Prev
+              </button>
+              <button id="next-month" class="button" aria-label="Next Month" type="button">
+                Next <span class="material-icons" aria-hidden="true">chevron_right</span>
+              </button>
+              <button id="today-btn" class="button" aria-label="Today" type="button">Today</button>
+              <select id="view-select" aria-label="Select calendar view" title="Change calendar view">
+                <option value="month" selected>Month</option>
+                <option value="week">Week</option>
+                <option value="day">Day</option>
+                <option value="agenda">Agenda</option>
+              </select>
+            </div>
+          </div>
+          <div id="calendar-container" class="calendar-grid" role="grid" aria-label="Calendar grid"></div>
+        </div>
+        <!-- Right panel -->
+        <aside class="right-panel" aria-label="Appointment creation panel">
+          <h3>New Appointment</h3>
+          <form id="appointment-form" novalidate>
+            <label for="patient-name">Patient Name</label>
+            <input type="text" id="patient-name" name="patientName" placeholder="Your full name" required autocomplete="off" aria-required="true" />
+
+            <label for="doctor-select">Select Doctor</label>
+            <select id="doctor-select" name="doctor" required aria-required="true" aria-describedby="doctor-help">
+              <option value="" disabled selected>Select a doctor</option>
+            </select>
+            <small id="doctor-help" style="color:#6b7280; font-size: 0.85rem;">Choose your treating doctor</small>
+
+            <label for="appointment-date">Date</label>
+            <input type="date" id="appointment-date" name="appointmentDate" required aria-required="true" />
+
+            <label for="appointment-time">Time</label>
+            <select id="appointment-time" name="appointmentTime" required aria-required="true" aria-describedby="time-help">
+              <option value="" disabled selected>Select a time slot</option>
+            </select>
+            <small id="time-help" style="color:#6b7280; font-size: 0.85rem;">Available time slots based on selected doctor and date</small>
+
+            <label for="appointment-notes">Notes (Optional)</label>
+            <textarea id="appointment-notes" name="notes" placeholder="Any specific concerns or symptoms"></textarea>
+
+            <button type="submit" aria-live="assertive" aria-atomic="true">Book Appointment</button>
+            <div id="form-error" class="error-message" aria-live="assertive"></div>
+            <div id="form-success" style="color: #16a34a; font-weight: 700; margin-top: 12px;" aria-live="assertive"></div>
+          </form>
+        </aside>
+      </div>
+    </section>
+
+    <section id="medicines" aria-label="Medicines available for patients" tabindex="0">
+      <h2>Medicines You Can Take</h2>
+      <div class="medicines-grid">
+        <article class="medicine-card" tabindex="0" aria-labelledby="med1-name" aria-describedby="med1-desc">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/48e57d18-c05a-4fa1-9a8a-d1ab4f984eba.png" alt="Paracetamol medicine box with purple background and white text" class="medicine-image" loading="lazy" />
+          <h3 id="med1-name" class="medicine-name">Paracetamol</h3>
+          <p id="med1-desc" class="medicine-info">Used for relieving pain and reducing fever. Take as directed by the doctor.</p>
+        </article>
+        <article class="medicine-card" tabindex="0" aria-labelledby="med2-name" aria-describedby="med2-desc">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9e2dbcc1-618f-4717-a967-7d2023256095.png" alt="Ibuprofen tablets in packaging with purple background and white text" class="medicine-image" loading="lazy" />
+          <h3 id="med2-name" class="medicine-name">Ibuprofen</h3>
+          <p id="med2-desc" class="medicine-info">Anti-inflammatory medicine used to reduce pain and swelling.</p>
+        </article>
+        <article class="medicine-card" tabindex="0" aria-labelledby="med3-name" aria-describedby="med3-desc">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4e4e4d9d-1ec1-49fc-a44c-57779173e673.png" alt="Amoxicillin capsules medicine packaging with purple background and white text" class="medicine-image" loading="lazy" />
+          <h3 id="med3-name" class="medicine-name">Amoxicillin</h3>
+          <p id="med3-desc" class="medicine-info">Antibiotic prescribed for bacterial infections. Complete full course as instructed.</p>
+        </article>
+        <article class="medicine-card" tabindex="0" aria-labelledby="med4-name" aria-describedby="med4-desc">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f150e013-d7d1-475a-a1d3-b10a4d6e319a.png" alt="Loratadine antihistamine medicine packaging with purple background and white text" class="medicine-image" loading="lazy" />
+          <h3 id="med4-name" class="medicine-name">Loratadine</h3>
+          <p id="med4-desc" class="medicine-info">Used to relieve allergy symptoms like runny nose and sneezing.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="timing-guidance" class="timing-guidance" aria-label="Patient visit timing guidance" tabindex="0">
+      <h2>When Should You Visit the Doctor?</h2>
+      <p>
+        The best times to visit your doctor depend on your health needs:
+      </p>
+      <ul>
+        <li><strong>Routine Checkups:</strong> Schedule yearly visits for preventive care and screenings.</li>
+        <li><strong>Specific Symptoms:</strong> Visit immediately if you experience severe pain, sudden dizziness, chest pain, or difficulty breathing.</li>
+        <li><strong>Chronic Condition Management:</strong> Follow your personalized schedule for monitoring and medication adjustments.</li>
+        <li><strong>Follow-up Visits:</strong> Book appointments as recommended after treatments or surgeries.</li>
+      </ul>
+      <p>Please always check the specific doctor's available timings above before booking.</p>
+    </section>
+
+  </main>
+
+  <script>
+    // Calendar and Appointment Data & Functionality
+
+    // Utility
+    const getFormattedDateString = (date) => date.toISOString().split('T')[0];
+
+    // Doctor data compatible with appointments
+    const doctors = [
+      {
+        id: 'dr-sarah-johnson',
+        name: 'Dr. Sarah Johnson',
+        specialization: 'Cardiology',
+        timings: ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00'],
+        availabilityDays: [1,2,3,4,5] // Monday-Friday
+      },
+      {
+        id: 'dr-james-lee',
+        name: 'Dr. James Lee',
+        specialization: 'Orthopedic',
+        timings: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00','13:30', '14:00', '14:30', '15:00', '15:30', '16:00'],
+        availabilityDays: [2,3,4,5,6] // Tue-Sat
+      },
+      {
+        id: 'dr-emily-clark',
+        name: 'Dr. Emily Clark',
+        specialization: 'Pediatrics',
+        timings: ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00'],
+        availabilityDays: [1,3,5] // Mon, Wed, Fri
+      },
+      {
+        id: 'dr-michael-nguyen',
+        name: 'Dr. Michael Nguyen',
+        specialization: 'Neurology',
+        timings: ['11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00'],
+        availabilityDays: [3,4,5,6,0] // Wed-Sun (0=Sun)
+      }
+    ];
+
+    // Appointment events - dummy data
+    let events = [
+      {
+        id: 'evt1',
+        title: 'Appointment - Dr. Sarah Johnson',
+        description: 'Follow-up cardiology checkup',
+        startDate: new Date(new Date().setHours(9,30,0,0)),
+        endDate: new Date(new Date().setHours(10,0,0,0)),
+        doctorId: 'dr-sarah-johnson',
+        patientName: 'John Doe',
+        category: 'checkup',
+      },
+      {
+        id: 'evt2',
+        title: 'Appointment - Dr. James Lee',
+        description: 'Knee pain consultation',
+        startDate: new Date(new Date().setDate(new Date().getDate() + 1)),
+        endDate: new Date(new Date().setDate(new Date().getDate() + 1)),
+        doctorId: 'dr-james-lee',
+        patientName: 'Jane Smith',
+        category: 'surgery',
+      },
+      // Add more dummy events as needed
+    ];
+
+    // State variables
+    let selectedDate = new Date();
+    let currentView = 'month';
+    let selectedDoctorId = '';
+    let selectedAppointmentDate = '';
+    let appointmentsByDate = {};
+
+    // DOM Elements
+    const miniCalendarEl = document.querySelector('.mini-calendar');
+    const calendarContainerEl = document.getElementById('calendar-container');
+    const calendarTitleEl = document.getElementById('calendar-title');
+    const viewSelectEl = document.getElementById('view-select');
+    const prevMonthBtn = document.getElementById('prev-month');
+    const nextMonthBtn = document.getElementById('next-month');
+    const todayBtn = document.getElementById('today-btn');
+    const doctorSelectEl = document.getElementById('doctor-select');
+    const appointmentDateEl = document.getElementById('appointment-date');
+    const appointmentTimeEl = document.getElementById('appointment-time');
+    const appointmentForm = document.getElementById('appointment-form');
+    const formErrorEl = document.getElementById('form-error');
+    const formSuccessEl = document.getElementById('form-success');
+    const upcomingEventsListEl = document.getElementById('upcoming-events-list');
+
+    // Initialize Doctor select options
+    function populateDoctorSelect() {
+      doctors.forEach(doc => {
+        const option = document.createElement('option');
+        option.value = doc.id;
+        option.textContent = doc.name + ' (' + doc.specialization + ')';
+        doctorSelectEl.appendChild(option);
+      });
+    }
+
+    // Utility: get days in month
+    function daysInMonth(year, month) {
+      return new Date(year, month + 1, 0).getDate();
+    }
+
+    // Utility: get start day offset 0=Sunday
+    function getMonthStartDay(year, month) {
+      return new Date(year, month, 1).getDay();
+    }
+
+    // Render mini calendar
+    function renderMiniCalendar() {
+      miniCalendarEl.innerHTML = '';
+      const today = new Date();
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+
+      const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+      const table = document.createElement('table');
+      table.setAttribute('role', 'grid');
+      table.setAttribute('aria-label', 'Mini calendar');
+
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
+      dayNames.forEach(dayName => {
+        const th = document.createElement('th');
+        th.textContent = dayName;
+        th.scope = 'col';
+        headerRow.appendChild(th);
+      });
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+
+      const tbody = document.createElement('tbody');
+
+      const startDay = getMonthStartDay(year, month);
+      const totalDays = daysInMonth(year, month);
+      let dayNum = 1;
+
+      // 6 rows, 7 columns = 42 cells max
+      for(let i=0; i<6; i++) {
+        const tr = document.createElement('tr');
+        for(let j=0; j<7; j++) {
+          const td = document.createElement('td');
+          // Fill with previous or next month's blank or valid days
+          if(i === 0 && j < startDay) {
+            td.classList.add('disabled');
+            td.textContent = '';
+          } else if(dayNum > totalDays) {
+            td.classList.add('disabled');
+            td.textContent = '';
+          } else {
+            td.textContent = dayNum;
+            const dateStr = new Date(year, month, dayNum).toISOString().split('T')[0];
+            td.dataset.date = dateStr;
+
+            if(year === today.getFullYear() && month === today.getMonth() && dayNum === today.getDate()) {
+              td.classList.add('today');
+            }
+            if(dateStr === getFormattedDateString(selectedDate)) {
+              td.classList.add('selected');
+            }
+            td.tabIndex = 0;
+            td.setAttribute('role', 'gridcell');
+            td.setAttribute('aria-selected', dateStr === getFormattedDateString(selectedDate) ? 'true' : 'false');
+
+            td.addEventListener('click', () => {
+              selectedDate = new Date(year, month, dayNum);
+              renderMiniCalendar();
+              renderMainCalendar();
+            });
+            td.addEventListener('keydown', e => {
+              if(e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                td.click();
+              }
+            });
+
+            dayNum++;
+          }
+          tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+      }
+      table.appendChild(tbody);
+      miniCalendarEl.appendChild(table);
+    }
+
+    // Format date for display: e.g., May 2024
+    function formatYearMonth(date) {
+      return date.toLocaleDateString(undefined, {year:"numeric", month:"long"});
+    }
+
+    // Format full date with weekday
+    function formatFullDate(date) {
+      return date.toLocaleDateString(undefined, {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
+    }
+
+    // Render main calendar according to currentView
+    function renderMainCalendar() {
+      calendarContainerEl.innerHTML = '';
+      let content;
+      calendarTitleEl.textContent = '';
+
+      switch(currentView) {
+        case 'month':
+          renderMonthView();
+          break;
+        case 'week':
+          renderWeekView();
+          break;
+        case 'day':
+          renderDayView();
+          break;
+        case 'agenda':
+          renderAgendaView();
+          break;
+      }
+    }
+
+    // Helper: get events filtered by date range
+    function getEventsInRange(startDate, endDate) {
+      return events.filter(event => 
+        event.startDate >= startDate && event.startDate < endDate
+      );
+    }
+
+    // Render month view calendar grid
+    function renderMonthView() {
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+      calendarTitleEl.textContent = formatYearMonth(selectedDate);
+
+      // Days header
+      const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const dayHeaders = dayNames.map(day => `<div class="day-header" role="columnheader">${day}</div>`).join('');
+
+      // Calculate with grid cells: including previous and next month days to fill rows
+      const firstDayOfMonth = new Date(year, month, 1);
+      const lastDayOfMonth = new Date(year, month + 1, 0);
+
+      const firstDayWeekday = firstDayOfMonth.getDay();
+      const daysInThisMonth = lastDayOfMonth.getDate();
+
+      // Determine days from previous month to show
+      const prevMonthLastDay = new Date(year, month, 0).getDate();
+
+      // Build cells
+      let cellsHtml = '';
+
+      // Previous month days
+      for(let i = firstDayWeekday - 1; i >= 0; i--) {
+        const dayNumber = prevMonthLastDay - i;
+        const outDate = new Date(year, month - 1, dayNumber);
+        cellsHtml += `<div class="day-cell out-of-month" aria-disabled="true"><div class="day-number">${dayNumber}</div></div>`;
+      }
+
+      // Current month days
+      for(let day = 1; day <= daysInThisMonth; day++) {
+        const dateObj = new Date(year, month, day);
+        const dateStr = getFormattedDateString(dateObj);
+        const isToday = (dateStr === getFormattedDateString(new Date()));
+        // Find events for this day
+        const dayEvents = events.filter(ev => ev.startDate.toISOString().slice(0,10) === dateStr);
+
+        // Build event badges
+        let badgeHtml = '';
+        dayEvents.forEach(ev => {
+          badgeHtml += `<div class="event-badge category-${ev.category}" title="${ev.title}">${ev.title}</div>`;
+        });
+
+        cellsHtml += `<div class="day-cell ${isToday ? 'today' : ''}" tabindex="0" role="gridcell" aria-label="${formatFullDate(dateObj)}">
+          <div class="day-number">${day}</div>
+          ${badgeHtml}
+        </div>`;
+      }
+
+      // Next month days to fill calendar (up to 42 cells total)
+      const totalCells = firstDayWeekday + daysInThisMonth;
+      const nextMonthDaysToShow = (totalCells <= 35 ? 42 : 49) - totalCells;
+      for(let i=1; i <= nextMonthDaysToShow; i++) {
+        cellsHtml += `<div class="day-cell out-of-month" aria-disabled="true"><div class="day-number">${i}</div></div>`;
+      }
+
+      calendarContainerEl.innerHTML = dayHeaders + cellsHtml;
+
+      // Add keyboard and click support for day cells in current month
+      const dayCells = calendarContainerEl.querySelectorAll('.day-cell:not(.out-of-month)');
+      dayCells.forEach((cell, idx) => {
+        cell.addEventListener('click', () => {
+          const selectedDay = idx + 1;
+          selectedDate = new Date(year, month, selectedDay);
+          appointmentDateEl.value = getFormattedDateString(selectedDate);
+          updateAvailableTimes();
+        });
+        cell.addEventListener('keydown', e => {
+          if(e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            cell.click();
+          }
+        });
+      });
+    }
+
+    // Stub render functions for week, day, agenda (can add minimal placeholders)
+    function renderWeekView() {
+      calendarTitleEl.textContent = 'Week View - Coming Soon';
+      calendarContainerEl.innerHTML = '<p style="padding:20px; color:#6b7280; font-style: italic;">Week view will be implemented later.</p>';
+    }
+    function renderDayView() {
+      calendarTitleEl.textContent = 'Day View - Coming Soon';
+      calendarContainerEl.innerHTML = '<p style="padding:20px; color:#6b7280; font-style: italic;">Day view will be implemented later.</p>';
+    }
+    function renderAgendaView() {
+      calendarTitleEl.textContent = 'Agenda View - Coming Soon';
+      calendarContainerEl.innerHTML = '<p style="padding:20px; color:#6b7280; font-style: italic;">Agenda view will be implemented later.</p>';
+    }
+
+    // Navigation handlers
+    function changeMonth(offset) {
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+      selectedDate = new Date(year, month + offset, 1);
+      renderMiniCalendar();
+      renderMainCalendar();
+    }
+    prevMonthBtn.addEventListener('click', () => changeMonth(-1));
+    nextMonthBtn.addEventListener('click', () => changeMonth(1));
+    todayBtn.addEventListener('click', () => {
+      selectedDate = new Date();
+      appointmentDateEl.value = getFormattedDateString(selectedDate);
+      renderMiniCalendar();
+      renderMainCalendar();
+    });
+    viewSelectEl.addEventListener('change', e => {
+      currentView = e.target.value;
+      renderMainCalendar();
+    });
+
+    // Appointment time slots update based on selected doctor and date
+    function updateAvailableTimes() {
+      appointmentTimeEl.innerHTML = '<option value="" disabled selected>Select a time slot</option>';
+      selectedDoctorId = doctorSelectEl.value;
+      selectedAppointmentDate = appointmentDateEl.value;
+
+      if(!selectedDoctorId || !selectedAppointmentDate) {
+        appointmentTimeEl.disabled = true;
+        return;
+      }
+
+      const doctor = doctors.find(d => d.id === selectedDoctorId);
+      if(!doctor) {
+        appointmentTimeEl.disabled = true;
+        return;
+      }
+
+      // Check if appointmentDate is on doctor's available day
+      const appointmentDateObj = new Date(selectedAppointmentDate);
+      const dayOfWeek = appointmentDateObj.getDay(); // 0-6
+      if(!doctor.availabilityDays.includes(dayOfWeek)) {
+        appointmentTimeEl.disabled = true;
+        return;
+      }
+
+      // Filter doctor's timings based on existing events on that day and doctor
+      let bookedTimes = events.filter(ev =>
+        ev.doctorId === doctor.id &&
+        ev.startDate.toISOString().slice(0,10) === selectedAppointmentDate
+      ).map(ev => ev.startDate.toTimeString().slice(0,5)); // HH:mm
+
+      // Build options excluding booked times
+      const availableTimes = doctor.timings.filter(t => !bookedTimes.includes(t));
+
+      if(availableTimes.length === 0) {
+        appointmentTimeEl.disabled = true;
+        const noSlotOption = document.createElement('option');
+        noSlotOption.textContent = 'No available slots';
+        noSlotOption.disabled = true;
+        appointmentTimeEl.appendChild(noSlotOption);
+        return;
+      }
+
+      availableTimes.forEach(time => {
+        const option = document.createElement('option');
+        option.value = time;
+        option.textContent = time;
+        appointmentTimeEl.appendChild(option);
+      });
+      appointmentTimeEl.disabled = false;
+    }
+
+    // On doctor or date select change update times
+    doctorSelectEl.addEventListener('change', () => {
+      updateAvailableTimes();
+    });
+    appointmentDateEl.addEventListener('change', () => {
+      updateAvailableTimes();
+    });
+
+    // Handle form submission for booking appointments
+    appointmentForm.addEventListener('submit', e => {
+      e.preventDefault();
+      formErrorEl.textContent = '';
+      formSuccessEl.textContent = '';
+
+      const patientName = appointmentForm.patientName.value.trim();
+      const doctorId = appointmentForm.doctor.value;
+      const apptDate = appointmentForm.appointmentDate.value;
+      const apptTime = appointmentForm.appointmentTime.value;
+      const notes = appointmentForm.notes.value.trim();
+
+      if(!patientName || !doctorId || !apptDate || !apptTime) {
+        formErrorEl.textContent = 'Please fill in all required fields.';
+        return;
+      }
+
+      // Compose start and end date objects
+      const [hours, minutes] = apptTime.split(':').map(n => parseInt(n, 10));
+      const startDateTime = new Date(apptDate);
+      startDateTime.setHours(hours, minutes, 0, 0);
+      const endDateTime = new Date(startDateTime.getTime() + 30*60000); // 30 min slot
+
+      // Check conflict — event overlaps with same doctor
+      const conflict = events.some(ev => 
+        ev.doctorId === doctorId &&
+        ((startDateTime >= ev.startDate && startDateTime < ev.endDate) ||
+        (endDateTime > ev.startDate && endDateTime <= ev.endDate) ||
+        (startDateTime <= ev.startDate && endDateTime >= ev.endDate))
+      );
+      if(conflict) {
+        formErrorEl.textContent = 'Selected time slot is not available. Please choose another time.';
+        return;
+      }
+
+      // Create new event
+      const doctor = doctors.find(d => d.id === doctorId);
+      const newEvent = {
+        id: crypto.randomUUID(),
+        title: `Appointment - ${doctor.name}`,
+        description: notes || '',
+        startDate: startDateTime,
+        endDate: endDateTime,
+        doctorId: doctorId,
+        patientName: patientName,
+        category: 'checkup'
+      };
+      events.push(newEvent);
+
+      formSuccessEl.textContent = `Appointment booked successfully with ${doctor.name} on ${apptDate} at ${apptTime}.`;
+      appointmentForm.reset();
+      appointmentTimeEl.disabled = true;
+      appointmentDateEl.value = '';
+      doctorSelectEl.value = '';
+      renderMainCalendar();
+      renderUpcomingEvents();
+    });
+
+    // Render upcoming events list (next 5)
+    function renderUpcomingEvents() {
+      upcomingEventsListEl.innerHTML = '';
+      const now = new Date();
+      const upcoming = events.filter(ev => ev.startDate >= now)
+        .sort((a,b) => a.startDate - b.startDate)
+        .slice(0,5);
+
+      if(upcoming.length === 0) {
+        upcomingEventsListEl.textContent = 'No upcoming appointments.';
+        return;
+      }
+      upcoming.forEach(ev => {
+        const doctor = doctors.find(d => d.id === ev.doctorId);
+        const evEl = document.createElement('div');
+        evEl.className = 'upcoming-event';
+        const dateStr = ev.startDate.toLocaleDateString(undefined, {month: 'short', day:'numeric'});
+        const timeStr = ev.startDate.toLocaleTimeString(undefined, {hour: '2-digit',minute: '2-digit'});
+        evEl.textContent = `${dateStr} ${timeStr} - ${doctor.name} (${ev.patientName})`;
+        upcomingEventsListEl.appendChild(evEl);
+      });
+    }
+
+    // On page load
+    window.addEventListener('DOMContentLoaded', () => {
+      populateDoctorSelect();
+      // Set appointmentDate input default value to today
+      appointmentDateEl.value = getFormattedDateString(new Date());
+      // Init available times disabled
+      appointmentTimeEl.disabled = true;
+
+      renderMiniCalendar();
+      renderMainCalendar();
+      renderUpcomingEvents();
+    });
+
+  </script>
+</body>
+</html>
+  
